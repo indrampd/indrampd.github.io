@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Link Generator with Sharing</title>
+    <title>Personalized Link Generator</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -37,6 +37,9 @@
     <button id="share-whatsapp" style="display: none">Share on WhatsApp</button>
     <button id="copy-message" style="display: none">
       Copy Message to Clipboard
+    </button>
+    <button id="share-other-apps" style="display: none">
+      Share to Other Apps
     </button>
 
     <script>
@@ -72,7 +75,7 @@
             window.open(whatsappLink, "_blank");
           };
 
-          // Copy message button
+          // Copy message to clipboard button
           const copyButton = document.getElementById("copy-message");
           copyButton.style.display = "block";
           copyButton.onclick = async function () {
@@ -83,6 +86,28 @@
               );
             } catch (err) {
               alert("Failed to copy message: " + err.message);
+            }
+          };
+
+          // General share to other apps button
+          const shareOtherAppsButton =
+            document.getElementById("share-other-apps");
+          shareOtherAppsButton.style.display = "block";
+          shareOtherAppsButton.onclick = async function () {
+            if (navigator.share) {
+              try {
+                const fullMessage = `${message}\n\nLink: ${personalizedLink}`;
+
+                await navigator.share({
+                  title: "Wedding Invitation",
+                  text: fullMessage,
+                  // url: personalizedLink, // The URL is also shared
+                });
+              } catch (err) {
+                alert("Failed to share: " + err.message);
+              }
+            } else {
+              alert("Sharing to other apps is not supported on this browser.");
             }
           };
         });
