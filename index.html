@@ -21,6 +21,10 @@
         width: 100%;
         max-width: 400px;
       }
+      #result {
+        margin-top: 10px;
+        word-break: break-word;
+      }
     </style>
   </head>
   <body>
@@ -31,7 +35,9 @@
     <button id="generate-link">Generate Link</button>
     <p id="result"></p>
     <button id="share-whatsapp" style="display: none">Share on WhatsApp</button>
-    <button id="share-other" style="display: none">Share to Other Apps</button>
+    <button id="copy-message" style="display: none">
+      Copy Message to Clipboard
+    </button>
 
     <script>
       document
@@ -66,22 +72,17 @@
             window.open(whatsappLink, "_blank");
           };
 
-          // General share button
-          const shareButton = document.getElementById("share-other");
-          shareButton.style.display = "block";
-          shareButton.onclick = async function () {
-            if (navigator.share) {
-              try {
-                await navigator.share({
-                  title: "Wedding Invitation",
-                  text: message,
-                  url: personalizedLink,
-                });
-              } catch (err) {
-                alert("Failed to share: " + err.message);
-              }
-            } else {
-              alert("Sharing is not supported on this browser.");
+          // Copy message button
+          const copyButton = document.getElementById("copy-message");
+          copyButton.style.display = "block";
+          copyButton.onclick = async function () {
+            try {
+              await navigator.clipboard.writeText(message);
+              alert(
+                "Message copied to clipboard! You can now paste it into any app."
+              );
+            } catch (err) {
+              alert("Failed to copy message: " + err.message);
             }
           };
         });
