@@ -1,116 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Personalized Link Generator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      label,
-      input,
-      button {
-        display: block;
-        margin-bottom: 10px;
-      }
-      input,
-      button {
-        padding: 8px;
-        width: 100%;
-        max-width: 400px;
-      }
-      #result {
-        margin-top: 10px;
-        word-break: break-word;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Personalized Link Generator</h1>
-    <label for="name">Enter Name:</label>
-    <input type="text" id="name" placeholder="Enter the name here" />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Personalized Link Generator</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				background-image: url("https://ni.rumahundangan.id/wp-content/uploads/2024/11/Mini-INVIT-3-2.jpg");
+				background-position: center center;
+				background-size: cover;
+				position: relative;
+			}
 
-    <button id="generate-link">Generate Link</button>
-    <p id="result"></p>
-    <button id="share-whatsapp" style="display: none">Share on WhatsApp</button>
-    <button id="copy-message" style="display: none">
-      Copy Message to Clipboard
-    </button>
-    <button id="share-other-apps" style="display: none">
-      Share to Other Apps
-    </button>
+			body::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(255, 255, 255, 0.9);
+				z-index: 1;
+			}
 
-    <script>
-      document
-        .getElementById("generate-link")
-        .addEventListener("click", function () {
-          const name = document.getElementById("name").value.trim();
+			section {
+				position: relative;
+				z-index: 1;
+			}
 
-          if (!name) {
-            alert("Please enter a name.");
-            return;
-          }
+			section {
+				width: 100%;
+				max-width: 400px;
+				margin: 0 auto;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				height: 100svh;
 
-          // Generate the personalized link
-          const baseURL = "https://indrampd.web.id/";
-          const personalizedLink = `${baseURL}${encodeURIComponent(name)}`;
+				label,
+				input,
+				button {
+					display: block;
+					margin-bottom: 1rem;
+				}
 
-          // Display the result
-          const resultElement = document.getElementById("result");
-          resultElement.textContent = `Your link: ${personalizedLink}`;
-          resultElement.style.marginTop = "10px";
+				input {
+					padding: 8px;
+					width: 100%;
+				}
 
-          // Prepare the message
-          const message = `Assalamu'alaikum Wr. Wb\nBismillahirahmanirrahim.\n\nYth. ${name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami:\n\nFina & Indra\n\nBerikut link undangan kami untuk info lengkap dari acara bisa kunjungi:\n\n${personalizedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya dibagikan melalui pesan ini. Terima kasih banyak atas perhatiannya.\n\nWassalamu'alaikum Wr. Wb.\nTerima Kasih.`;
+				#result {
+					margin-top: 10px;
+					word-break: break-word;
+				}
 
-          // WhatsApp share button
-          const whatsappLink = `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-            message
-          )}`;
-          const whatsappButton = document.getElementById("share-whatsapp");
-          whatsappButton.style.display = "block";
-          whatsappButton.onclick = function () {
-            window.open(whatsappLink, "_blank");
-          };
+				button {
+					display: inline-flex;
+					background-color: transparent;
+					font-family: "Verdana", Sans-serif;
+					font-size: 12px;
+					font-weight: normal;
+					fill: #ffffff;
+					color: #ffffff;
+					background-image: linear-gradient(
+						180deg,
+						#b89e92 0%,
+						#725b50 100%
+					);
+					border-style: solid;
+					border-width: 1px 1px 1px 1px;
+					border-color: #ffffff;
+					border-radius: 20px 20px 20px 20px;
+					box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+					padding: 11px 20px 11px 20px;
 
-          // Copy message to clipboard button
-          const copyButton = document.getElementById("copy-message");
-          copyButton.style.display = "block";
-          copyButton.onclick = async function () {
-            try {
-              await navigator.clipboard.writeText(message);
-              alert(
-                "Message copied to clipboard! You can now paste it into any app."
-              );
-            } catch (err) {
-              alert("Failed to copy message: " + err.message);
-            }
-          };
+					&.share-whatsapp,
+					&.copy-message,
+					&.share-other-apps {
+						display: none;
 
-          // General share to other apps button
-          const shareOtherAppsButton =
-            document.getElementById("share-other-apps");
-          shareOtherAppsButton.style.display = "block";
-          shareOtherAppsButton.onclick = async function () {
-            if (navigator.share) {
-              try {
-                const fullMessage = `${message}\n\nLink: ${personalizedLink}`;
+						&.is-active {
+							display: block;
+						}
+					}
+				}
 
-                await navigator.share({
-                  title: "Wedding Invitation",
-                  text: fullMessage,
-                  // url: personalizedLink, // The URL is also shared
-                });
-              } catch (err) {
-                alert("Failed to share: " + err.message);
-              }
-            } else {
-              alert("Sharing to other apps is not supported on this browser.");
-            }
-          };
-        });
-    </script>
-  </body>
+				.form-wrapper {
+					width: 100%;
+					max-width: 400px;
+				}
+
+				.button-wrapper {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 10px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<section>
+			<h1>Fina &amp; Indra</h1>
+			<div class="form-wrapper">
+				<label for="name">Tamu Undangan</label>
+				<input
+					type="text"
+					id="name"
+					placeholder="Bapak/Ibu/Saudara/i"
+				/>
+				<input
+					type="text"
+					placeholder="https://indrampd.web.id/"
+					class="result"
+					readonly
+					onclick="this.select()"
+				/>
+			</div>
+
+			<div class="button-wrapper">
+				<button class="generate-link">Generate Link</button>
+				<button class="share-whatsapp">Share on WhatsApp</button>
+				<button class="copy-message">Copy Message to Clipboard</button>
+				<button class="share-other-apps">Share to Other Apps</button>
+			</div>
+		</section>
+
+		<script>
+			document
+				.querySelector(".generate-link")
+				.addEventListener("click", function () {
+					const nameInput = document.querySelector("#name");
+					const name =
+						nameInput.value.trim() || "Bapak/Ibu/Saudara/i";
+
+					console.log(name);
+
+					// Generate the personalized link
+					const baseURL = "https://indrampd.web.id/";
+					const personalizedLink = `${baseURL}${encodeURIComponent(
+						name
+					)}`;
+
+					// Display the result
+					const resultElement = document.querySelector(".result");
+					resultElement.value = personalizedLink;
+
+					// Prepare the message
+					const message = `Assalamu'alaikum Wr. Wb\nBismillahirahmanirrahim.\n\nYth. ${name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami:\n\nFina & Indra\n\nBerikut link undangan kami untuk info lengkap dari acara bisa kunjungi:\n\n${personalizedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya dibagikan melalui pesan ini. Terima kasih banyak atas perhatiannya.\n\nWassalamu'alaikum Wr. Wb.\nTerima Kasih.`;
+
+					// WhatsApp share button
+					const whatsappLink = `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+						message
+					)}`;
+					const whatsappButton =
+						document.querySelector(".share-whatsapp");
+					whatsappButton.classList.add("is-active");
+					whatsappButton.onclick = function () {
+						window.open(whatsappLink, "_blank");
+					};
+
+					// Copy message to clipboard button
+					const copyButton = document.querySelector(".copy-message");
+					copyButton.style.display = "block";
+					copyButton.onclick = async function () {
+						try {
+							await navigator.clipboard.writeText(message);
+							alert(
+								"Message copied to clipboard! You can now paste it into any app."
+							);
+						} catch (err) {
+							alert("Failed to copy message: " + err.message);
+						}
+					};
+
+					// General share to other apps button
+					const shareOtherAppsButton =
+						document.querySelector(".share-other-apps");
+					shareOtherAppsButton.style.display = "block";
+					shareOtherAppsButton.onclick = async function () {
+						if (navigator.share) {
+							try {
+								const fullMessage = `${message}\n\nLink: ${personalizedLink}`;
+
+								await navigator.share({
+									title: "Wedding Invitation",
+									text: fullMessage,
+									// url: personalizedLink, // The URL is also shared
+								});
+							} catch (err) {
+								alert("Failed to share: " + err.message);
+							}
+						} else {
+							alert(
+								"Sharing to other apps is not supported on this browser."
+							);
+						}
+					};
+				});
+		</script>
+	</body>
 </html>
