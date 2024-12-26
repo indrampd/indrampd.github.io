@@ -3,7 +3,17 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Personalized Link Generator</title>
+		<link
+			rel="icon"
+			href="https://ni.rumahundangan.id/wp-content/uploads/2024/11/cropped-LOGO-32x32.jpg"
+			sizes="32x32"
+		/>
+		<link
+			rel="icon"
+			href="https://ni.rumahundangan.id/wp-content/uploads/2024/11/cropped-LOGO-192x192.jpg"
+			sizes="192x192"
+		/>
+		<title>Fina &amp; Indra Invitation</title>
 		<style>
 			body {
 				font-family: Arial, sans-serif;
@@ -185,11 +195,11 @@
 					shareOtherAppsButton.onclick = async function () {
 						if (navigator.share) {
 							try {
-								const fullMessage = `${message}\n\nLink: ${personalizedLink}`;
+								// const fullMessage = `${message}\n\nLink: ${personalizedLink}`;
 
 								await navigator.share({
 									title: "Wedding Invitation",
-									text: fullMessage,
+									text: message,
 									// url: personalizedLink, // The URL is also shared
 								});
 							} catch (err) {
