@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Link Generator</title>
+    <title>Link Generator with Sharing</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -31,6 +31,7 @@
     <button id="generate-link">Generate Link</button>
     <p id="result"></p>
     <button id="share-whatsapp" style="display: none">Share on WhatsApp</button>
+    <button id="share-other" style="display: none">Share to Other Apps</button>
 
     <script>
       document
@@ -52,16 +53,36 @@
           resultElement.textContent = `Your link: ${personalizedLink}`;
           resultElement.style.marginTop = "10px";
 
-          // Update the WhatsApp share button
-          const whatsappMessage = `Assalamu'alaikum Wr. Wb\nBismillahirahmanirrahim.\n\nYth. ${name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami:\n\nFina & Indra\n\nBerikut link undangan kami untuk info lengkap dari acara bisa kunjungi:\n\n${personalizedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya dibagikan melalui pesan ini. Terima kasih banyak atas perhatiannya.\n\nWassalamu'alaikum Wr. Wb.\nTerima Kasih.`;
-          const whatsappLink = `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-            whatsappMessage
-          )}`;
+          // Prepare the message
+          const message = `Assalamu'alaikum Wr. Wb\nBismillahirahmanirrahim.\n\nYth. ${name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami:\n\nFina & Indra\n\nBerikut link undangan kami untuk info lengkap dari acara bisa kunjungi:\n\n${personalizedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya dibagikan melalui pesan ini. Terima kasih banyak atas perhatiannya.\n\nWassalamu'alaikum Wr. Wb.\nTerima Kasih.`;
 
-          const shareButton = document.getElementById("share-whatsapp");
-          shareButton.style.display = "block";
-          shareButton.onclick = function () {
+          // WhatsApp share button
+          const whatsappLink = `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+            message
+          )}`;
+          const whatsappButton = document.getElementById("share-whatsapp");
+          whatsappButton.style.display = "block";
+          whatsappButton.onclick = function () {
             window.open(whatsappLink, "_blank");
+          };
+
+          // General share button
+          const shareButton = document.getElementById("share-other");
+          shareButton.style.display = "block";
+          shareButton.onclick = async function () {
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: "Wedding Invitation",
+                  text: message,
+                  url: personalizedLink,
+                });
+              } catch (err) {
+                alert("Failed to share: " + err.message);
+              }
+            } else {
+              alert("Sharing is not supported on this browser.");
+            }
           };
         });
     </script>
