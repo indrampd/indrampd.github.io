@@ -132,7 +132,9 @@
 
 			<div class="button-wrapper">
 				<button class="generate-link">Generate Link</button>
-				<button class="share-whatsapp">Share on WhatsApp</button>
+				<button class="share-whatsapp" target="_blank">
+					Share on WhatsApp
+				</button>
 				<button class="copy-message">Copy Message to Clipboard</button>
 				<button class="share-other-apps">Share to Other Apps</button>
 			</div>
@@ -169,7 +171,7 @@
 						document.querySelector(".share-whatsapp");
 					whatsappButton.classList.add("is-active");
 					whatsappButton.onclick = function () {
-						window.open(whatsappLink, "_blank");
+						window.location.href = whatsappLink;
 					};
 
 					// Copy message to clipboard button
